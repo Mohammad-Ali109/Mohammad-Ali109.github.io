@@ -1,7 +1,7 @@
 // ======================================================
 // Web3Forms Configuration
 // 1. Go to https://web3forms.com
-// 2. Enter mdali102837@gmail.com and click "Create Access Key"
+// 2. Enter mohammadali.ru.bd@gmail.com and click "Create Access Key"
 // 3. Check your Gmail inbox for the key
 // 4. Paste it below replacing YOUR_ACCESS_KEY
 // ======================================================
@@ -15,52 +15,57 @@ document.addEventListener('DOMContentLoaded', () => {
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            const btnText    = document.getElementById('btnText');
-            const btnIcon    = document.getElementById('btnIcon');
-            const btnLoader  = document.getElementById('btnLoader');
-            const submitBtn  = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnLoader = document.getElementById('btnLoader');
+            const submitBtn = document.getElementById('submitBtn');
             const formStatus = document.getElementById('formStatus');
 
             // Show loading state
-            btnText.style.display   = 'none';
-            btnIcon.style.display   = 'none';
+            btnText.style.display = 'none';
+            btnIcon.style.display = 'none';
             btnLoader.style.display = 'inline';
-            submitBtn.disabled      = true;
-            formStatus.textContent  = '';
+            submitBtn.disabled = true;
+            formStatus.textContent = '';
 
             const formData = {
-                access_key : WEB3FORMS_ACCESS_KEY,
-                name       : document.getElementById('name').value,
-                email      : document.getElementById('email').value,
-                message    : document.getElementById('message').value,
-                subject    : "New Portfolio Contact from " + document.getElementById('name').value,
-                from_name  : "Portfolio Website"
+                access_key: WEB3FORMS_ACCESS_KEY,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                replyto: document.getElementById('email').value, // Allows you to reply directly
+                message: document.getElementById('message').value,
+                subject: "New Portfolio Contact from " + document.getElementById('name').value,
+                from_name: "Portfolio Website"
             };
 
             try {
                 const response = await fetch('https://api.web3forms.com/submit', {
-                    method  : 'POST',
-                    headers : { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body    : JSON.stringify(formData)
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
                 });
                 const result = await response.json();
 
                 if (result.success) {
-                    formStatus.style.color  = '#38bdf8';
-                    formStatus.textContent  = '✅ Message sent! I\'ll reply to you soon.';
+                    formStatus.style.color = '#38bdf8';
+                    formStatus.textContent = '✅ Message sent! I\'ll reply to you soon.';
                     contactForm.reset();
                 } else {
+                    console.log("Web3Forms Result:", result);
                     throw new Error(result.message || 'Submission failed');
                 }
             } catch (error) {
                 console.error('Web3Forms error:', error);
-                formStatus.style.color  = '#f87171';
-                formStatus.textContent  = '❌ Failed to send. Please email mdali102837@gmail.com directly.';
+                formStatus.style.color = '#f87171';
+                formStatus.textContent = '❌ Failed to send. Please email mohammadali.ru.bd@gmail.com directly.';
             } finally {
-                btnText.style.display   = 'inline';
-                btnIcon.style.display   = 'inline';
+                btnText.style.display = 'inline';
+                btnIcon.style.display = 'inline';
                 btnLoader.style.display = 'none';
-                submitBtn.disabled      = false;
+                submitBtn.disabled = false;
             }
         });
     }
